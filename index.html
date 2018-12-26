@@ -1,0 +1,38 @@
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+  <video></video>
+  <script>
+    const main = async () => {
+      // Prefer camera resolution nearest to 1280x720.
+      const constraints = { audio: true, video: { width: 1280, height: 720 } }
+      try {
+        let mediaStream = await navigator.mediaDevices.getUserMedia(constraints)
+        console.log(mediaStream)
+        let video = document.querySelector('video')
+        video.srcObject = mediaStream
+        video.addEventListener('loadedmetadata', (e) => {
+          video.play()
+        })
+
+      } catch (e) {
+        if (e instanceof NotFoundError) {
+          console.log('NotFoundError', e.name, e.message)
+        } else if (e instanceof PermissionDeniedError) {
+          console.log('PermissionDeniedError', e.name, ': ', e.message)
+        }
+        console.log(err.name, ': ', err.message)
+      }
+    }
+
+    window.addEventListener('load', main)
+  </script>
+</body>
+
+</html>
